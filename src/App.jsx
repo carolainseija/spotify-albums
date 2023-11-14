@@ -1,5 +1,4 @@
-import React from "react";
-import { Col, Row, Layout, Card, Input, List, Typography } from "antd";
+import { Col, Row, Layout, Input, List, Typography } from "antd";
 import "./theme.less";
 import { Header } from "antd/es/layout/layout";
 import ContentAlbums from "./components/albums";
