@@ -1,5 +1,6 @@
 import { Col, Row, Card } from "antd";
 import Meta from "antd/es/card/Meta";
+import './albums.less';
 
 const ContentAlbums = () => {
   const albums = [
@@ -38,6 +39,60 @@ const ContentAlbums = () => {
       description: "Album Tini",
       alt: "imagen de portada del álbum",
       src: "https://i.scdn.co/image/ab67616d00001e02a1c9eb3d636a682619591c7e",
+    },
+    {
+      title: "Tini - Martina Stoessel",
+      description: "Album Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67616d0000b2738cb0bced19cec869749b2949",
+    },
+    {
+      title: "Cupido",
+      description: "Album de Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67706c0000da84410935984cb61373fd95cb35",
+    },
+    {
+      title: "Quiero Volver",
+      description: "Album Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67616d00001e028e629e5f0576774aee22a4af",
+    },
+    {
+      title: "Tini - Martina Stoessel",
+      description: "Album Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67616d0000b2738cb0bced19cec869749b2949",
+    },
+    {
+      title: "Cupido",
+      description: "Album de Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67706c0000da84410935984cb61373fd95cb35",
+    },
+    {
+      title: "Quiero Volver",
+      description: "Album Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67616d00001e028e629e5f0576774aee22a4af",
+    },
+    {
+      title: "Tini - Martina Stoessel",
+      description: "Album Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67616d0000b2738cb0bced19cec869749b2949",
+    },
+    {
+      title: "Cupido",
+      description: "Album de Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67706c0000da84410935984cb61373fd95cb35",
+    },
+    {
+      title: "Quiero Volver",
+      description: "Album Tini",
+      alt: "imagen de portada del álbum",
+      src: "https://i.scdn.co/image/ab67616d00001e028e629e5f0576774aee22a4af",
     },
   ];
 
