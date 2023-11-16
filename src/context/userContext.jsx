@@ -1,14 +1,11 @@
 import { createContext, useState } from "react";
+export const UserContext = createContext();
 
-const initialValue = {
-  user: "Carolain Seija",
-  id: "123Carolain",
-};
-
-export const UserContext = createContext(initialValue);
-
+// eslint-disable-next-line react/prop-types
 export default function UserProvider({ children }) {
-  const [user, setUser] = useState(initialValue.user);
+  const [user, setUser] = useState({
+    displayName: "Usuario"
+  });
 
   const value = { user, setUser };
   return <UserContext.Provider value={value} children={children} />;

@@ -1,11 +1,10 @@
-import { Col, Flex, Input, Row, Button } from "antd";
+import { Col, Flex, Row, Button } from "antd";
 import logo from "./assets/logo.png";
-import { useContext } from "react";
-import { UserContext } from "./context/userContext";
+import useLoginSpotify from "./hooks/useLoginSpotify";
 
 const Login = () => {
-  const { user } = useContext(UserContext);
-  
+  const { generateCode } = useLoginSpotify();
+
   return (
     <Row Flex justify="center" align="middle" style={{ height: "100vh" }}>
       <Col span={8} style={{ height: "50vh" }}>
@@ -14,7 +13,7 @@ const Login = () => {
           <h1 style={{ color: "white", textAlign: "center" }}>
             Escucha música sin limites.
           </h1>
-          <Button className="buttonGreen" size="large">
+          <Button className="buttonGreen" size="large" onClick={generateCode}>
             Iniciar sesión
           </Button>
         </Flex>
