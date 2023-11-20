@@ -8,32 +8,66 @@ import {
   Button,
   Card,
   Avatar,
-  Flex,
 } from "antd";
 import "./theme.less";
 import { Header } from "antd/es/layout/layout";
 import ContentAlbums from "./components/albums";
 import logo from "./assets/logo.png";
-import { PlusOutlined, PoweroffOutlined } from "@ant-design/icons";
+import { PoweroffOutlined } from "@ant-design/icons";
 import useNameInitial from "./hooks/useNameInitial";
-import useLoginSpotify from "./hooks/useLoginSpotify";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./context/userContext";
-
+import useGetAlbums from "./hooks/useGetAlbums";
 const { Search } = Input;
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
-  const { user } = useContext(UserContext);
-  const { getUser } = useLoginSpotify();
+  const { user, handleChangeUser } = useContext(UserContext);
+
+  const { albumsArtist, artist, getAlbumsArtist, loadingAlbums } =
+    useGetAlbums();
+
+  let clientId = "ffe30f6fa76e49a8bc17153064c99a7f";
+
+  const saveToken = async () => {
+    const redirectUri = "http://localhost:5173/home";
+    const urlParams = new URLSearchParams(window.location.search);
+    let code = urlParams.get("code");
+
+    let codeVerifier = localStorage.getItem("code_verifier");
+
+    const payload = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        client_id: clientId,
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: redirectUri,
+        code_verifier: codeVerifier,
+      }),
+    };
+
+    const body = await fetch("https://accounts.spotify.com/api/token", payload);
+    const response = await body.json();
+    await localStorage.setItem("access_token", response.access_token);
+  };
 
   useEffect(() => {
-    try {
-      getUser().finally(() => setLoading(false));
-    } catch (error) {
-      console.log(error);
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    if (code) {
+      saveToken();
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, [getUser]);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    handleChangeUser();
+  }, []);
 
   const listDrawer = [
     "Inicio",
@@ -49,36 +83,28 @@ const Home = () => {
         <Col xs={24} sm={24} md={12} lg={6} xl={6}>
           <Layout direction="vertical" className="homeContent">
             <img src={logo} alt="logo" className="logo" />
-            {!loading && (
-              <>
-                <Flex
-                  gap="middle"
-                  horizontal
-                  justify="flex-start"
-                  align="flex-start"
-                >
-                  <Typography.Title
-                    level={5}
-                    style={{ color: "white", marginLeft: "70px" }}
-                  >
-                    <Avatar
-                      style={{
-                        backgroundColor: "#87d068",
-                        color: "#FFF",
-                        marginRight: 5,
-                      }}
-                    >
-                      {useNameInitial(user)}
-                    </Avatar>
-                    {user}
-                  </Typography.Title>
-                  <PoweroffOutlined />
-                </Flex>
-              </>
-            )}
             <List
               className="list"
               dataSource={listDrawer}
+              header={
+                !loading && (
+                  <>
+                    <Typography.Title level={5} style={{ color: "white" }}>
+                      <Avatar
+                        style={{
+                          backgroundColor: "#87d068",
+                          color: "#FFF",
+                          marginRight: 5,
+                        }}
+                      >
+                        {useNameInitial(user?.displayName)}
+                      </Avatar>
+                      {user?.displayName}
+                    </Typography.Title>
+                    <PoweroffOutlined />
+                  </>
+                )
+              }
               renderItem={(item) => (
                 <List.Item>
                   <Typography.Text className="listItems">
@@ -97,12 +123,8 @@ const Home = () => {
                 Crea tu propia Playlist
               </Typography.Title>
               <Typography.Paragraph>Es muy fácil</Typography.Paragraph>
-              <Button
-                className="buttonGreen"
-                icon={<PlusOutlined />}
-                size="large"
-              >
-                Crear PlayList
+              <Button className="buttonGreen" size="large">
+                + Crear PlayList
               </Button>
             </Card>
           </Layout>
@@ -112,10 +134,14 @@ const Home = () => {
             <Search
               className="search"
               placeholder="Buscar álbum por nombre de artista"
-              onSearch={(value) => console.log(value)}
+              onSearch={(value) => getAlbumsArtist(value)}
             />
           </Header>
-          <ContentAlbums />
+          <ContentAlbums
+            albums={albumsArtist}
+            loading={loadingAlbums}
+            artist={artist}
+          />
         </Col>
       </Row>
     </div>
