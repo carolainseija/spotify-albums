@@ -1,10 +1,4 @@
-import {
-  Col,
-  Row,
-  Card,
-  Empty,
-  Flex,
-} from "antd";
+import { Col, Row, Card, Empty, Flex } from "antd";
 import Meta from "antd/es/card/Meta";
 import "./albums.less";
 import SkeletonLoad from "../Skeleton/SkeletonLoad";
@@ -13,7 +7,7 @@ const ContentAlbums = ({ albums, artist, loading }) => {
   return (
     <Card bordered={false} className="contentCards">
       {loading === true ? (
-          <SkeletonLoad />
+        <SkeletonLoad />
       ) : (
         <>
           {albums?.length === 0 || albums === undefined ? (
@@ -33,34 +27,36 @@ const ContentAlbums = ({ albums, artist, loading }) => {
                 <h1>Resultados de la búsqueda: álbumes de {artist}</h1>
               </Row>
               <Row>
-                {albums
-                  .sort((a, b) => b.popularity - a.popularity)
-                  .map((album) => (
-                    <>
-                      <Col
-                        xs={{
-                          span: 24,
-                          offset: 1,
+                {albums.map((album) => (
+                  <>
+                    <Col
+                      key={album.id}
+                      xs={{
+                        span: 24,
+                        offset: 1,
+                      }}
+                      lg={{
+                        span: 6,
+                        offset: 1,
+                      }}
+                    >
+                      <Card
+                        key={album.id}
+                        hoverable
+                        style={{
+                          width: "auto",
+                          margin: "10px 0px",
                         }}
-                        lg={{
-                          span: 6,
-                          offset: 1,
-                        }}
+                        cover={<img src={album.images[1].url} />}
                       >
-                        <Card
-                          key={album.id}
-                          hoverable
-                          style={{
-                            width: "auto",
-                            margin: "10px 0px",
-                          }}
-                          cover={<img src={album.images[1].url} />}
-                        >
-                          <Meta title={album.name} description={album.name} />
-                        </Card>
-                      </Col>
-                    </>
-                  ))}
+                        <Meta
+                          title={album.name}
+                          description={`Tipo: ${album.type} / Popularidad: ${album.popularity}`}
+                        />
+                      </Card>
+                    </Col>
+                  </>
+                ))}
               </Row>
             </>
           )}

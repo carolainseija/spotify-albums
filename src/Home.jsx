@@ -26,13 +26,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const { user, handleChangeUser } = useContext(UserContext);
 
-  const {
-    getArtistForName,
-    albumsArtist,
-    popularyAlbums,
-    artistName,
-  } = useGetAlbums();
-
+  const { getArtistForName, albumsArtist, artistName, setAlbumsArtist } = useGetAlbums();
   let clientId = "ffe30f6fa76e49a8bc17153064c99a7f";
 
   const saveToken = async () => {
@@ -83,15 +77,44 @@ const Home = () => {
     "Favoritos",
   ];
 
-  const searchAlbums = async (value) => {
-    setLoadingAlbums(true);
-    await getArtistForName(value);
-    albumsArtist?.forEach(async (album) => {
-      await popularyAlbums(album.id);
-    });
-    setLoadingAlbums(false);
-  };
+  let token = window.localStorage.getItem("access_token");
 
+  const searchAlbums = async (value) => {
+    try {
+      setLoadingAlbums(true);
+      const albumsForArtist = await getArtistForName(value);
+
+      const results = await Promise.all(
+        albumsForArtist.map(async (album) => {
+          const albumUrl = `https://api.spotify.com/v1/albums/${album.id}`;
+          try {
+            const albumResponse = await fetch(albumUrl, {
+              method: "GET",
+              headers: { Authorization: "Bearer" + " " + token },
+            });
+
+            if (albumResponse.status === 200) {
+              const albumData = await albumResponse.json();
+              const popularity = albumData.popularity;
+              return { ...album, popularity };
+            }
+            
+            throw new Error(`${albumResponse.status}`);
+         
+          } catch (error) {
+            console.error(error.message);
+            return album;
+          }
+        })
+      );
+      const sortedAlbums = results.sort((a, b) => b.popularity - a.popularity);
+      setAlbumsArtist(sortedAlbums);
+      setLoadingAlbums(false);
+    } catch (error) {
+      console.error(error.message);
+      setLoadingAlbums(false);
+    }
+  };
 
   return (
     <div style={{ margin: "0px", padding: "0px" }}>
