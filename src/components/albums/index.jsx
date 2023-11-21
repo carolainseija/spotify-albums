@@ -18,8 +18,18 @@ const ContentAlbums = ({ albums, artist, loading }) => {
               align="center"
               style={{ height: "80vh" }}
             >
-              <Empty description="¡Hasta ahora no se han realizado búsquedas de álbums por artistas!" />
-              <h3>¡Busca por el nombre de tu artista favorito!</h3>
+              <Empty
+                description={
+                  artist == ""
+                    ? "¡Hasta ahora no se han realizado búsquedas de álbums!"
+                    : `Has buscado por ${artist}`
+                }
+              />
+              <h3>
+                {artist == ""
+                  ? "¡Busca por el nombre de tu artista favorito!"
+                  : "Lo sentimos, no hemos encontrado albumes para este artista"}
+              </h3>
             </Flex>
           ) : (
             <>

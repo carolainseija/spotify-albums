@@ -174,6 +174,7 @@ const Home = () => {
               className="search"
               placeholder="Buscar álbum por nombre de artista"
               onSearch={(value) => searchAlbums(value)}
+              allowClear
             />
           </Header>
           <ContentAlbums
