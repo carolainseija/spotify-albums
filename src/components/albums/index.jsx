@@ -39,34 +39,32 @@ const ContentAlbums = ({ albums, artist, loading }) => {
               </Row>
               <Row>
                 {albums.map((album) => (
-                  <>
-                    <Col
+                  <Col
+                    key={album.id}
+                    xs={{
+                      span: 24,
+                      offset: 1,
+                    }}
+                    lg={{
+                      span: 6,
+                      offset: 1,
+                    }}
+                  >
+                    <Card
                       key={album.id}
-                      xs={{
-                        span: 24,
-                        offset: 1,
+                      hoverable
+                      style={{
+                        width: "auto",
+                        margin: "10px 0px",
                       }}
-                      lg={{
-                        span: 6,
-                        offset: 1,
-                      }}
+                      cover={<img src={album.images[1].url} />}
                     >
-                      <Card
-                        key={album.id}
-                        hoverable
-                        style={{
-                          width: "auto",
-                          margin: "10px 0px",
-                        }}
-                        cover={<img src={album.images[1].url} />}
-                      >
-                        <Meta
-                          title={album.name}
-                          description={`Tipo: ${album.type} / Popularidad: ${album.popularity}`}
-                        />
-                      </Card>
-                    </Col>
-                  </>
+                      <Meta
+                        title={album.name}
+                        description={`Tipo: ${album.type} / Popularidad: ${album.popularity}`}
+                      />
+                    </Card>
+                  </Col>
                 ))}
               </Row>
             </>
