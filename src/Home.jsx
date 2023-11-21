@@ -100,7 +100,7 @@ const Home = () => {
       setAlbumsArtist(sortedAlbums);
       setLoadingAlbums(false);
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
       setLoadingAlbums(false);
     }
   };

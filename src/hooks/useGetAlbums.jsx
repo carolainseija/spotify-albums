@@ -44,7 +44,7 @@ export default function useGetAlbums() {
       throw new Error(response.status);
 
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error:", error);
     }
   };
 
