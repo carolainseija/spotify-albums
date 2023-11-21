@@ -1,35 +1,69 @@
 import { useState } from "react";
 
 export default function useGetAlbums() {
-  const [loadingAlbums, setLoadingAlbums] = useState(false);
   const [albumsArtist, setAlbumsArtist] = useState([]);
-  const [artist, setArtist] = useState("");
+  const [artistName, setArtisName] = useState("");
 
-  async function getAlbumsArtist(value) {
-    setLoadingAlbums(true);
+  let token = window.localStorage.getItem("access_token");
 
-    const token = window.localStorage.getItem("access_token");
-    setArtist(value);
-
-    const url = `https://api.spotify.com/v1/search?q=remaster%2520track%3ADoxy%2520artist%3A${artist}&type=album&limit=10`;
+  const popularyAlbums = async (albumId) => {
+    const url = `https://api.spotify.com/v1/albums/${albumId}`;
     const response = fetch(url, {
       method: "GET",
       headers: { Authorization: "Bearer" + " " + token },
     });
 
-    const datos = await (await response).json();
-    const { albums } = datos;
-    
-    setAlbumsArtist(albums.items);
-    setLoadingAlbums(false);
+    const data = (await response).json();
+    const { popularity } = await data;
 
-    return datos;
+    setAlbumsArtist((prev) => {
+      return prev.map((alb) => {
+        if (alb.id === albumId) {
+          return { ...alb, popularity: popularity };
+        }
+        return alb;
+      });
+    });
+
+    return popularity;
+  };
+
+
+  async function getArtistForName(value) {
+    setArtisName(value);
+    const url = `https://api.spotify.com/v1/search?q=artist%3A${value}&type=artist`;
+    const response = fetch(url, {
+      method: "GET",
+      headers: { Authorization: "Bearer" + " " + token },
+    });
+
+    const data = await (await response).json();
+    console.log("daaa", data)
+    const { artists } = data;
+    await getAlbumsForArtist(artists.items[0].id);
+    return data;
   }
 
+
+
+  const getAlbumsForArtist = async (artistID) => {
+    const url = `https://api.spotify.com/v1/artists/${artistID}/albums?include_groups=album&offset=0`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: { Authorization: "Bearer" + " " + token },
+    });
+    const data = await response.json();
+    const { items } = data;
+    setAlbumsArtist(items);
+    return items;
+  };
+
+
   return {
-    getAlbumsArtist,
-    loadingAlbums,
-    artist,
+    getArtistForName,
     albumsArtist,
+    setAlbumsArtist,
+    artistName,
+    popularyAlbums,
   };
 }

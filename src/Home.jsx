@@ -21,11 +21,17 @@ import useGetAlbums from "./hooks/useGetAlbums";
 const { Search } = Input;
 
 const Home = () => {
+  const [loadingAlbums, setLoadingAlbums] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const { user, handleChangeUser } = useContext(UserContext);
 
-  const { albumsArtist, artist, getAlbumsArtist, loadingAlbums } =
-    useGetAlbums();
+  const {
+    getArtistForName,
+    albumsArtist,
+    popularyAlbums,
+    artistName,
+  } = useGetAlbums();
 
   let clientId = "ffe30f6fa76e49a8bc17153064c99a7f";
 
@@ -77,6 +83,16 @@ const Home = () => {
     "Favoritos",
   ];
 
+  const searchAlbums = async (value) => {
+    setLoadingAlbums(true);
+    await getArtistForName(value);
+    albumsArtist?.forEach(async (album) => {
+      await popularyAlbums(album.id);
+    });
+    setLoadingAlbums(false);
+  };
+
+
   return (
     <div style={{ margin: "0px", padding: "0px" }}>
       <Row>
@@ -105,8 +121,8 @@ const Home = () => {
                   </>
                 )
               }
-              renderItem={(item) => (
-                <List.Item>
+              renderItem={(item, index) => (
+                <List.Item key={index}>
                   <Typography.Text className="listItems">
                     {item}
                   </Typography.Text>
@@ -134,13 +150,13 @@ const Home = () => {
             <Search
               className="search"
               placeholder="Buscar álbum por nombre de artista"
-              onSearch={(value) => getAlbumsArtist(value)}
+              onSearch={(value) => searchAlbums(value)}
             />
           </Header>
           <ContentAlbums
             albums={albumsArtist}
             loading={loadingAlbums}
-            artist={artist}
+            artist={artistName}
           />
         </Col>
       </Row>

@@ -1,25 +1,22 @@
-import { Col, Row, Card, Skeleton, Empty, Flex, Pagination } from "antd";
+import {
+  Col,
+  Row,
+  Card,
+  Empty,
+  Flex,
+} from "antd";
 import Meta from "antd/es/card/Meta";
 import "./albums.less";
+import SkeletonLoad from "../Skeleton/SkeletonLoad";
 
 const ContentAlbums = ({ albums, artist, loading }) => {
   return (
     <Card bordered={false} className="contentCards">
       {loading === true ? (
-        <Row>
-          <Card>
-            <Skeleton />
-          </Card>
-          <Card>
-            <Skeleton />
-          </Card>
-          <Card>
-            <Skeleton />
-          </Card>
-        </Row>
+          <SkeletonLoad />
       ) : (
         <>
-          {albums.length === 0 ? (
+          {albums?.length === 0 || albums === undefined ? (
             <Flex
               gap="middle"
               vertical
@@ -36,38 +33,34 @@ const ContentAlbums = ({ albums, artist, loading }) => {
                 <h1>Resultados de la búsqueda: álbumes de {artist}</h1>
               </Row>
               <Row>
-                {albums?.map((album) => (
-                  <>
-                    <Col
-                      xs={{
-                        span: 24,
-                        offset: 1,
-                      }}
-                      lg={{
-                        span: 6,
-                        offset: 1,
-                      }}
-                    >
-                      <Card
-                        hoverable
-                        style={{
-                          width: "auto",
-                          margin: "10px 0px",
+                {albums
+                  .sort((a, b) => b.popularity - a.popularity)
+                  .map((album) => (
+                    <>
+                      <Col
+                        xs={{
+                          span: 24,
+                          offset: 1,
                         }}
-                        cover={<img src={album.images[1].url} />}
+                        lg={{
+                          span: 6,
+                          offset: 1,
+                        }}
                       >
-                        <Meta title={album.name} description={album.name} />
-                      </Card>
-                    </Col>
-                  </>
-                ))}
-              </Row>
-              <Row>
-                <Pagination
-                  current={10}
-                  onChange={(page) => console.log("page", page)}
-                  total={10}
-                />
+                        <Card
+                          key={album.id}
+                          hoverable
+                          style={{
+                            width: "auto",
+                            margin: "10px 0px",
+                          }}
+                          cover={<img src={album.images[1].url} />}
+                        >
+                          <Meta title={album.name} description={album.name} />
+                        </Card>
+                      </Col>
+                    </>
+                  ))}
               </Row>
             </>
           )}
