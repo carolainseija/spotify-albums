@@ -16,23 +16,33 @@ Esta aplicación web desarrollada con React y Vite aprovecha la potencia de la A
 
 ## Uso
 
-1. Abre tu navegador y visita [http://localhost:3000](http://localhost:5173).
+1. Abre tu navegador y visita [http://localhost:5173](http://localhost:5173).
 2. Ingresa el nombre del artista en la interfaz de usuario.
 3. La aplicación enviará una solicitud a la API de Spotify y mostrará la respuesta en formato JSON.
+4. *Credenciales Spotify:*
+   - Correo Electrónico: reactpruebas292@gmail.com
+   - Contraseña: Pruebas123
 
 
 ## Configuración y Ejecución
 
+#### Credenciales Spotify
+
+ - Correo Electrónico: reactpruebas292@gmail.com
+ - Contraseña: Pruebas123
+
+
 ### Paso 1: Clonar el Repositorio
+#### instalación
 
 ```bash
 git clone https://github.com/carolainseija/spotify-albums.git
 cd spotify-albums
 
-### Paso 2: Instalar Dependencias
+- Instalar Dependencias
 
-npm install
+        npm install
 
-### Paso 3: Iniciar la Aplicación 
+- Iniciar la Aplicación 
 
-npm run dev
+        npm run dev

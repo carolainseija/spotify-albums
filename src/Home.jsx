@@ -7,23 +7,17 @@ import {
   Typography,
   Button,
   Card,
-  Avatar,
 } from "antd";
 import "./theme.less";
 import { Header } from "antd/es/layout/layout";
 import ContentAlbums from "./components/albums";
 import logo from "./assets/logo.png";
-import useNameInitial from "./hooks/useNameInitial";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "./context/userContext";
+import { useEffect, useState } from "react";
 import useGetAlbums from "./hooks/useGetAlbums";
 const { Search } = Input;
 
 const Home = () => {
   const [loadingAlbums, setLoadingAlbums] = useState(null);
-
-  const [loading, setLoading] = useState(true);
-  const { user, handleChangeUser } = useContext(UserContext);
 
   const { getArtistForName, albumsArtist, artistName, setAlbumsArtist } = useGetAlbums();
   let clientId = "ffe30f6fa76e49a8bc17153064c99a7f";
@@ -61,11 +55,6 @@ const Home = () => {
       saveToken();
       window.history.replaceState({}, document.title, window.location.pathname);
     }
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    handleChangeUser();
   }, []);
 
   const listDrawer = [
@@ -124,24 +113,6 @@ const Home = () => {
             <List
               className="list"
               dataSource={listDrawer}
-              header={
-                !loading && (
-                  <>
-                    <Typography.Title level={5} style={{ color: "white" }}>
-                      <Avatar
-                        style={{
-                          backgroundColor: "#87d068",
-                          color: "#FFF",
-                          marginRight: 5,
-                        }}
-                      >
-                        {useNameInitial(user?.displayName)}
-                      </Avatar>
-                      {user?.displayName}
-                    </Typography.Title>
-                  </>
-                )
-              }
               renderItem={(item, index) => (
                 <List.Item key={index}>
                   <Typography.Text className="listItems">

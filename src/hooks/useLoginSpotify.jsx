@@ -47,25 +47,7 @@ export default function useLoginSpotify() {
     window.location.href = authUrl.toString();
   };
 
-  const getUser = async () => {
-    try {
-      const accessToken = window.localStorage.getItem("access_token");
-      const response = await fetch("https://api.spotify.com/v1/me", {
-        method: "GET",
-        headers: { Authorization: "Bearer " + accessToken },
-      });
-      if (response.status === 200) {
-        const data = await response.json();
-        return data.display_name;
-      }
-      throw new Error("error al cargar");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return {
     generateCode,
-    getUser,
   };
 }
