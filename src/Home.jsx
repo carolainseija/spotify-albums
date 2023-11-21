@@ -108,7 +108,7 @@ const Home = () => {
   return (
     <div style={{ margin: "0px", padding: "0px" }}>
       <Row>
-        <Col xs={24} sm={24} md={12} lg={6} xl={6}>
+        <Col xs={24} sm={24} md={12} lg={7} xl={6}>
           <Layout direction="vertical" className="homeContent">
             <img src={logo} alt="logo" className="logo" />
             <List
@@ -138,7 +138,7 @@ const Home = () => {
             </Card>
           </Layout>
         </Col>
-        <Col xs={24} sm={24} md={12} lg={18} xl={18} className="content">
+        <Col xs={24} sm={24} md={12} lg={17} xl={18} className="content">
           <Header className="header">
             <Search
               className="search"
