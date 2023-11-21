@@ -1,10 +1,9 @@
 import { useState } from "react";
 
 export default function useGetAlbums() {
-  const [albumsArtist, setAlbumsArtist] = useState([]);
   const [artistName, setArtisName] = useState("");
 
-  let token = window.localStorage.getItem("access_token");
+  let token = "BQBJ6N6iXW0ZQhTePqXgmurOOHChSrQWFjqQFwzIJCGc3X4OtjT5fwu4Dk5mhPndKG0hk9mXOjSy2n5Dc-8FtWFH_JudBCDVmWBrPgg-2Wr3v_rbLxB6qKT9gefHvcBAkzYxlb7vCM2xvAYtQd2Ab8nEIvLH84E6kQ1qe4j3SWO-LAM7H-vhb8p1aSEv9arKzx4ZuFJfH_R6utFnNZB3JA"
 
   async function getArtistForName(value) {
     setArtisName(value);
@@ -24,7 +23,7 @@ export default function useGetAlbums() {
     try {
       const response = await fetch(url, {
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: "Bearer" + " " + token },
       });
 
       if (!response.ok) {
@@ -40,8 +39,6 @@ export default function useGetAlbums() {
 
   return {
     getArtistForName,
-    albumsArtist,
-    setAlbumsArtist,
     artistName,
   };
 }

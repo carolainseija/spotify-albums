@@ -7,66 +7,19 @@ import {
   Typography,
   Button,
   Card,
-  Avatar,
 } from "antd";
 import "./theme.less";
 import { Header } from "antd/es/layout/layout";
 import ContentAlbums from "./components/albums";
 import logo from "./assets/logo.png";
-import useNameInitial from "./hooks/useNameInitial";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "./context/userContext";
+import { useState } from "react";
 import useGetAlbums from "./hooks/useGetAlbums";
 const { Search } = Input;
 
 const Home = () => {
   const [loadingAlbums, setLoadingAlbums] = useState(null);
-
-  const [loading, setLoading] = useState(true);
-  const { user, handleChangeUser } = useContext(UserContext);
-
-  const { getArtistForName, albumsArtist, artistName, setAlbumsArtist } = useGetAlbums();
-  let clientId = "ffe30f6fa76e49a8bc17153064c99a7f";
-
-  const saveToken = async () => {
-    const redirectUri = "http://localhost:5173/home";
-    const urlParams = new URLSearchParams(window.location.search);
-    let code = urlParams.get("code");
-
-    let codeVerifier = localStorage.getItem("code_verifier");
-
-    const payload = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        client_id: clientId,
-        grant_type: "authorization_code",
-        code,
-        redirect_uri: redirectUri,
-        code_verifier: codeVerifier,
-      }),
-    };
-
-    const body = await fetch("https://accounts.spotify.com/api/token", payload);
-    const response = await body.json();
-    await localStorage.setItem("access_token", response.access_token);
-  };
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    if (code) {
-      saveToken();
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    handleChangeUser();
-  }, []);
+  const [albumsArtist, setAlbumsArtist] = useState([]);
+  const { getArtistForName, artistName } = useGetAlbums();
 
   const listDrawer = [
     "Inicio",
@@ -76,7 +29,7 @@ const Home = () => {
     "Favoritos",
   ];
 
-  let token = window.localStorage.getItem("access_token");
+  let token = "BQBJ6N6iXW0ZQhTePqXgmurOOHChSrQWFjqQFwzIJCGc3X4OtjT5fwu4Dk5mhPndKG0hk9mXOjSy2n5Dc-8FtWFH_JudBCDVmWBrPgg-2Wr3v_rbLxB6qKT9gefHvcBAkzYxlb7vCM2xvAYtQd2Ab8nEIvLH84E6kQ1qe4j3SWO-LAM7H-vhb8p1aSEv9arKzx4ZuFJfH_R6utFnNZB3JA"
 
   const searchAlbums = async (value) => {
     try {
@@ -124,24 +77,6 @@ const Home = () => {
             <List
               className="list"
               dataSource={listDrawer}
-              header={
-                !loading && (
-                  <>
-                    <Typography.Title level={5} style={{ color: "white" }}>
-                      <Avatar
-                        style={{
-                          backgroundColor: "#87d068",
-                          color: "#FFF",
-                          marginRight: 5,
-                        }}
-                      >
-                        {useNameInitial(user?.displayName)}
-                      </Avatar>
-                      {user?.displayName}
-                    </Typography.Title>
-                  </>
-                )
-              }
               renderItem={(item, index) => (
                 <List.Item key={index}>
                   <Typography.Text className="listItems">

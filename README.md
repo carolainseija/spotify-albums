@@ -16,7 +16,7 @@ Esta aplicación web desarrollada con React y Vite aprovecha la potencia de la A
 
 ## Uso
 
-1. Abre tu navegador y visita [http://localhost:3000](http://localhost:5173).
+1. Abre tu navegador y visita [http://localhost:5173](http://localhost:5173).
 2. Ingresa el nombre del artista en la interfaz de usuario.
 3. La aplicación enviará una solicitud a la API de Spotify y mostrará la respuesta en formato JSON.
 
