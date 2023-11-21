@@ -13,7 +13,6 @@ import "./theme.less";
 import { Header } from "antd/es/layout/layout";
 import ContentAlbums from "./components/albums";
 import logo from "./assets/logo.png";
-import { PoweroffOutlined } from "@ant-design/icons";
 import useNameInitial from "./hooks/useNameInitial";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./context/userContext";
@@ -140,7 +139,6 @@ const Home = () => {
                       </Avatar>
                       {user?.displayName}
                     </Typography.Title>
-                    <PoweroffOutlined />
                   </>
                 )
               }
