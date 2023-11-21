@@ -9,19 +9,21 @@ export default function useGetAlbums() {
   async function getArtistForName(value) {
     setArtisName(value);
     try {
-      const url = `https://api.spotify.com/v1/search?q=artist%3A${value.replace(" ", "%20")}&type=artist`;
-      const response = await fetch(url, {
-        method: "GET",
-        headers: { Authorization: "Bearer" + " " + token },
-      });
-
-      if (response.status === 200) {
-        const data = await response.json();
-        const { artists } = data;
-        const albums = await getAlbumsForArtist(artists.items[0].id);
-        return albums;
+      if(value !== ""){
+        const url = `https://api.spotify.com/v1/search?q=artist%3A${value.replace(" ", "%20")}&type=artist`;
+        const response = await fetch(url, {
+          method: "GET",
+          headers: { Authorization: "Bearer" + " " + token },
+        });
+  
+        if (response.status === 200) {
+          const data = await response.json();
+          const { artists } = data;
+          const albums = await getAlbumsForArtist(artists.items[0].id);
+          return albums;
+        }
+        throw new Error(response.status);
       }
-      throw new Error(response.status);
 
     } catch (error) {
       console.error("Error:", error.message);
