@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Col, Row, Card, Empty, Flex } from "antd";
 import Meta from "antd/es/card/Meta";
 import "./albums.less";

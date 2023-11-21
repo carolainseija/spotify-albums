@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Col,
   Row,
@@ -86,15 +87,15 @@ const Home = () => {
               const popularity = albumData.popularity;
               return { ...album, popularity };
             }
-            
-            throw new Error(`${albumResponse.status}`);
+            throw new Error(albumResponse.status);
          
           } catch (error) {
-            console.error(error.message);
+            console.error("Error", error.message);
             return album;
           }
         })
       );
+
       const sortedAlbums = results.sort((a, b) => b.popularity - a.popularity);
       setAlbumsArtist(sortedAlbums);
       setLoadingAlbums(false);
